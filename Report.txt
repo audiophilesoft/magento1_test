@@ -53,7 +53,7 @@ Data is requested with same AJAX function as before.
 
 
 17. Сделать красивые ссылки URL rewrites для своих 3-ех экшенов и назначить их соответствующим view all ссылкам.
-Url rewrites added in Catalog->URL Rewrite Management -> Add... (custom type). Getting rewrited URL's with core/url_rewrite Model, need to find out how to quickly append the query strings to them (now it's done with own method).
+Url rewrites added in Catalog->URL Rewrite Management -> Add... (custom type). Getting rewrited URL's with core/url_rewrite Model.
 
 18. Сделать так, чтобы хоум пейдж и экшены загружались менее 1с с выключенным кэшем.
 Almost all optimizations involve caching (application cache, browser cache, etc.), but there is some other ways to optimize performance. Some of optimizations that reduce page generation time:
@@ -67,6 +67,7 @@ Almost all optimizations involve caching (application cache, browser cache, etc.
 
 Result: the main page loads in ~1.2s at my locale machine with HDD (I believe this will be a few times faster on the server machine with SSD)
 
-Optimization that can be done to make the resources downloading faster:
+Optimization that can be done to make the resources d
+loading faster:
 1) Using gzip compression for text files (css, js) - done in .htaccess (needs some testing, especially in combination with caching);
 2) Merging CSS and JS files - done in System / Configuration / Advanced / Developer.
