@@ -1,0 +1,72 @@
+ -- Отчёт по тестовому заданию Magento -- 
+
+Note: I focused at the backend - the front looks terrible, but functionality is seem to be working. 
+
+Running Magento 1.9.3.7 at PHP 5.6/Apache 2.4/MySQL 5.7
+
+1. Создать категории Appliances, Test2 из админ панели.
+Created from "Manage categories"
+
+2. Создать 20 продуктов для этой категории различных типов (simple, configurable и grouped) из админ панели.
+Created 2 сonfigurable and 1 grouped from Manage Products. Custom attribute "color" added to the default attributes set.
+
+3. Настроить в админке, чтобы на странице категории выводилось 10 продуктов на страницу (т.е. появится пагинация на 2 страницы).
+Changed in System > Configuration > Catalog > Frontend.
+
+4. Вывести на Home page 10 продуктов из категории Appliances. (Мадженто виджеты, соответственно из админ панели)
+Done by adding a new block (NATIVE BLOCK PLACED WITH HOME PAGE CONTENT SETTINGS) to home's content, as it seems the preconfigured widgets don't support filtering by category.
+CSS fix (left margin) in \skin\frontend\rwd\default\css\styles.css to get the grid shown correct.
+
+5. Вывести на  Home page 10 продуктов из категории Test2 с помощью layout со своим шаблоном для вывода (разобраться с шаблоном Мадженто для вывода продуктов, создать свой такой же только без лишнего, т.е. убрать тулбары и т.д.).
+Done by adding app\design\frontend\rwd\default\template\catalog\product\list-custom.phtml to layout update (THE BLOCK WITH A CUSTOM TEMPLATE). Maybe this should be moved somewhere else (to my custom theme folder?)
+
+6. Из списка товаров описанного в предыдущем пункте сделать слайдер как на енсоул “Популярные товары” (http://ensoul.ua/) (можно использовать любой jquery слайдер).
+Done by creating new list-custom-slider.phtml and including jQuery slick slider. Js and css are placed into the rwd theme directory and included in page.xml (not the best solution maybe, though it works).
+
+
+7. сделать свой блок для вывода продуктов категории  Test2, который будет подключаться в  layout’е и принимать в качестве параметров (через  layout) ID категории и кол-во продуктов для вывода.
+Done by adding a custom local module Asoft_Categoryproducts and passing parameters from Block to the Model. Title: MY FULLY CUSTOM BLOCK.
+
+8.  Под слайдером сделать ссылку view all, которая будет вести на страницу категории Test2
+Done by adding getCategoryUrl() to Block, which passes request to the Model.
+
+9. сделать свой контроллер с экшеном, который будет формировать коллекцию продуктов из категории Test2 и выводить ее в слайдер описанный выше, переназначить ссылку view all под слайдером, чтобы вела на это контроллер и экшн.
+Done. Controller's action instantiates my block (written before) and passess parameters for unlimited loading from specific category. The action is requested with AJAX.
+
+
+10. добавить Boolean аттрибут New arrival из админки для продуктов
+Done in Catalog->Attributes->Manage attribues...
+
+11. добавить Boolean аттрибут Refurbished программно для продуктов.
+Done with temporary Asoft_Categoryproducts_IndexController::setupAction(). 
+
+
+12. сделать еще 2 карусели на хоумпейдж, состоящие из 10 продуктов, первая карусель формируется из коллекции продуктов с аттрибутом New arrival - Yes, вторая с аттрибутом Refurbished - Yes.
+13. Сделать ссылки View all для последних 2-ух каруселей.
+14. Добавить 2 новых экшена в своем контроллере, которые будут выводить все продукты New arrival и Refurbished соответственно, ссылки view all соответствующих каруселей должны вести на эти экшены. 
+Done by adding new module: structure reworked, added new base abstract block. Genereally, I should also use base abstract class for the Model, and implement some kind if inheritance for phtml templates (is this possible? include?), as they are very similar.
+Data is requested with same AJAX function as before. 
+
+
+15. добавить тулбар сверху и снизу для всех 3 списков продуктов (которые отображаются на экшенах)
+16. добавить фильтры для этой страницы, которые будут фильтровать коллекцию (стандартные Мадженто).
+
+
+17. Сделать красивые ссылки URL rewrites для своих 3-ех экшенов и назначить их соответствующим view all ссылкам.
+Url rewrites added in Catalog->URL Rewrite Management -> Add... (custom type). Getting rewrited URL's with core/url_rewrite Model, need to find out how to quickly append the query strings to them (now it's done with own method).
+
+18. Сделать так, чтобы хоум пейдж и экшены загружались менее 1с с выключенным кэшем.
+Almost all optimizations involve caching (application cache, browser cache, etc.), but there is some other ways to optimize performance. Some other optimizations that can reduce page generation time:
+
+1) Disabling unnecessary modules - done in System / Configuration / Advanced / Advanced (unsafe, for testing only);
+2) Migration to PHP 7 - needs further research (Inchoo_PHP7 2.1.1 installed, test passess with no errors, but Magento shows Fatal error @PHP 7.0);
+3) Enabling Flat Catalog - looks like enabling this (in Configuration / Catalog) makes standard filters not working. Needs further research;
+4) Enabling of Magento Compilation  - done in System / Tools / Compilation;
+5) Updating DB Indexes - done in Configuration / Index management;
+6) Using PHP accelerators - OPcache enabled and configured.
+
+Result: the main page loads in ~1.2s at my locale machine with HDD (I believe this will bу a few times faster on the server machine with SSD)
+
+Optimization that can be done to make the resources downloading faster:
+1) Using gzip compression for text files (css, js) - done in .htaccess (needs some testing, especially in combination with caching);
+2) Merging CSS and JS files - done in System / Configuration / Advanced / Developer.
