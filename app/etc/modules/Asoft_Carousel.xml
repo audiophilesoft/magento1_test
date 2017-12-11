@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Asoft_Carousel>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Asoft_Carousel>
+    </modules>
+</config>

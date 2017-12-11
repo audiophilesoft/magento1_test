@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Asoft_Carousel>
+            <version>1.0</version>
+        </Asoft_Carousel>
+    </modules>
+    <frontend>
+        <routers>
+            <carousel>
+                <use>standard</use>
+                <args>
+                    <module>Asoft_Carousel</module>
+                    <frontName>carousel</frontName>
+                </args>
+            </carousel>
+        </routers>
+    </frontend>
+    <global>
+        <blocks>
+            <carousel>
+                <class>Asoft_Carousel_Block</class>
+            </carousel>
+        </blocks>
+        <models>
+            <carousel>
+                <class>Asoft_Carousel_Model</class>
+            </carousel>
+        </models>
+    </global>
+</config>

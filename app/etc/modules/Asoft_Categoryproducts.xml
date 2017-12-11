@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Asoft_Categoryproducts>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Asoft_Categoryproducts>
+    </modules>
+</config>

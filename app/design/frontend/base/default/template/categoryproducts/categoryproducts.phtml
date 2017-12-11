@@ -1,0 +1,82 @@
+<?php
+
+$products = $this->getProducts();
+$cat_url = $this->getCategoryUrl();
+$cat_id = $this->getCategoryId();
+$only = $this->getOnlyParameter();
+$helper = $this->helper('catalog/output');
+$column_count = ($this->getColumnCount() === null) ? 5 : $this->getColumnCount();
+
+$params =
+$view_all_url = $this->getUrlByIdPath('load_category', ['category_id' => $cat_id]);
+?>
+
+<div class="product_list">
+    <h2>My fully custom block</h2>
+    <?php if ($products->count()) { ?><?php $iterator = 0; ?><?php $_collectionSize = $products->count() ?>
+        <ul class="products-grid products-grid--max-<?= $column_count; ?>-col slick-slider">
+            <?php $i = 0;
+            foreach ($products as $product): ?><?php /*if ($i++%$_columnCount==0): ?>
+            <?php endif*/ ?>
+                <li class="item<?php if (($i - 1) % $column_count == 0): ?> first<?php elseif ($i % $column_count == 0): ?> last<?php endif; ?>">
+                    <a href="<?= $product->getProductUrl() ?>" title="<?= $this->stripTags($this->getImageLabel($product,
+                        'small_image'), null, true) ?>" class="product-image">
+                        <?php $_imgSize = 210; ?>
+                        <img id="product-collection-image-<?= $product->getId(); ?>" src="<?= $this->helper('catalog/image')->init($product,
+                            'small_image')->resize($_imgSize); ?>" alt="<?= $this->stripTags($this->getImageLabel($product,
+                            'small_image'), null, true) ?>"/> </a>
+                    <div class="product-info">
+                        <h2 class="product-name">
+                            <a href="<?= $product->getProductUrl() ?>" title="<?= $this->stripTags($product->getName(),
+                                null, true) ?>"><?= $helper->productAttribute($product,
+                                    $product->getName(), 'name') ?></a></h2>
+                        <?php
+                        // Provides extra blocks on which to hang some features for products in the list
+                        // Features providing UI elements targeting this block will display directly below the product name
+                        if ($this->getChild('name.after')) {
+                            $_nameAfterChildren = $this->getChild('name.after')->getSortedChildren();
+                            foreach ($_nameAfterChildren as $_nameAfterChildName) {
+                                $_nameAfterChild = $this->getChild('name.after')->getChild($_nameAfterChildName);
+                                $_nameAfterChild->setProduct($product);
+                                echo $_nameAfterChild->toHtml();
+                            }
+                        }
+                        ?>
+                        <?= $this->getPriceHtml($product, true) ?>
+                        <?php if ($product->getRatingSummary()): ?><?= $this->getReviewsSummaryHtml($product,
+                            'short') ?><?php endif; ?>
+                        <div class="actions">
+                            <?php if (!$product->canConfigure() && $product->isSaleable()): ?>
+                                <button type="button" title="<?= $this->quoteEscape($this->__('Add to Cart')) ?>" class="button btn-cart" onclick="setLocation('<?= $this->getAddToCartUrl($product) ?>')">
+                                    <span><span><?= $this->__('Add to Cart') ?></span></span></button>
+                            <?php elseif ($product->getStockItem() && $product->getStockItem()->getIsInStock()): ?>
+                                <a title="<?= $this->quoteEscape($this->__('View Details')) ?>" class="button" href="<?= $product->getProductUrl() ?>"><?= $this->__('View Details') ?></a>
+                            <?php else: ?>
+                                <p class="availability out-of-stock">
+                                    <span><?= $this->__('Out of stock') ?></span></p>
+                            <?php endif; ?>
+                            <ul class="add-to-links">
+                                <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                                    <li>
+                                        <a href="<?= $this->helper('wishlist')->getAddUrl($product) ?>" class="link-wishlist"><?= $this->__('Add to Wishlist') ?></a>
+                                    </li>
+                                <?php endif; ?>
+                                <?php if ($_compareUrl = $this->getAddToCompareUrl($product)): ?>
+                                    <li><span class="separator">|</span>
+                                        <a href="<?= $_compareUrl ?>" class="link-compare"><?= $this->__('Add to Compare') ?></a>
+                                    </li>
+                                <?php endif; ?>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <?php /*if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+            <?php endif*/ ?><?php endforeach ?>
+        </ul>
+        <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd', 'even', 'first', 'last'])</script>
+
+    <?php } ?>
+    <?php if ($this->mustShowViewAll()): ?>
+        <a onclick="showAll(event, this)" href="<?= $view_all_url ?>">View all</a>
+    <?php endif; ?>
+</div>
