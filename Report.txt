@@ -44,7 +44,7 @@ Done with temporary Asoft_Categoryproducts_IndexController::setupAction().
 12. сделать еще 2 карусели на хоумпейдж, состоящие из 10 продуктов, первая карусель формируется из коллекции продуктов с аттрибутом New arrival - Yes, вторая с аттрибутом Refurbished - Yes.
 13. Сделать ссылки View all для последних 2-ух каруселей.
 14. Добавить 2 новых экшена в своем контроллере, которые будут выводить все продукты New arrival и Refurbished соответственно, ссылки view all соответствующих каруселей должны вести на эти экшены. 
-Done by adding new module: structure reworked, added new base abstract block. Genereally, I should also use base abstract class for the Model, and implement some kind if inheritance for phtml templates (is this possible? include?), as they are very similar.
+Done by adding new module: structure reworked, added new base abstract block. Generally, I should also use base abstract class for the Model, and implement some kind of inheritance for phtml templates (is this possible? include?), as they are very similar.
 Data is requested with same AJAX function as before. 
 
 
