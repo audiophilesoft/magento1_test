@@ -56,7 +56,7 @@ Data is requested with same AJAX function as before.
 Url rewrites added in Catalog->URL Rewrite Management -> Add... (custom type). Getting rewrited URL's with core/url_rewrite Model, need to find out how to quickly append the query strings to them (now it's done with own method).
 
 18. Сделать так, чтобы хоум пейдж и экшены загружались менее 1с с выключенным кэшем.
-Almost all optimizations involve caching (application cache, browser cache, etc.), but there is some other ways to optimize performance. Some other optimizations that can reduce page generation time:
+Almost all optimizations involve caching (application cache, browser cache, etc.), but there is some other ways to optimize performance. Some of optimizations that reduce page generation time:
 
 1) Disabling unnecessary modules - done in System / Configuration / Advanced / Advanced (unsafe, for testing only);
 2) Migration to PHP 7 - needs further research (Inchoo_PHP7 2.1.1 installed, test passess with no errors, but Magento shows Fatal error @PHP 7.0);
