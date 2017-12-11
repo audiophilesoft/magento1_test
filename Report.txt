@@ -65,7 +65,7 @@ Almost all optimizations involve caching (application cache, browser cache, etc.
 5) Updating DB Indexes - done in Configuration / Index management;
 6) Using PHP accelerators - OPcache enabled and configured.
 
-Result: the main page loads in ~1.2s at my locale machine with HDD (I believe this will bу a few times faster on the server machine with SSD)
+Result: the main page loads in ~1.2s at my locale machine with HDD (I believe this will be a few times faster on the server machine with SSD)
 
 Optimization that can be done to make the resources downloading faster:
 1) Using gzip compression for text files (css, js) - done in .htaccess (needs some testing, especially in combination with caching);
